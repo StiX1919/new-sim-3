@@ -3,24 +3,33 @@ import axios from 'axios'
 const TEST = 'TEST'
 
 const initialState = {
-    test: 'nothing'
+    testing: 'nothing',
+    isLoading: false
 };
 
 
-export function test(thing) {
+export function test() {
     return {
         type: TEST,
-        payload: thing
-    }
-
+        payload: axios.get('http://localhost:3000/api/newTest/').then(response => {
+            console.log(response.data, 'response')
+        return response.data
+    })
+}
 }
 // Reducer
 
 export default function reducer(state = initialState, action){
     switch(action.type) {
-        case TEST: 
+
+        case TEST + "_PENDING": 
             return Object.assign({}, state, {
-                test: action.payload
+                isLoading: true
+            });
+        case TEST + "_FULFILLED": 
+            return Object.assign({}, state, {
+                isLoading: false,
+                testing: action.payload
             });
 
 

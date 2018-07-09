@@ -6,7 +6,9 @@ const cors = require("cors");
 const session = require("express-session");
 const massive = require("massive");
 
-
+const {
+  test
+} = require('./controllers/mainController')
 
 const port = 3000;
 
@@ -16,11 +18,11 @@ const app = express();
 //app.use(express.static(`${__dirname}/public/build`));
 //
 
-// massive(process.env.CONNECTION_STRING)
-//   .then(db => {
-//     app.set("db", db);
-//   })
-//   .catch(err => console.log(err));
+massive(process.env.CONNECTION_STRING)
+  .then(db => {
+    app.set("db", db);
+  })
+  .catch(err => console.log(err));
 
 app.use(json());
 app.use(cors());
@@ -35,7 +37,7 @@ app.use(cors());
 // app.get('/api/getColor', (req, res) => {
 //     res.send(color)
 // })
-
+app.get('/api/newTest/', test)
 
 //LISTENING
 app.listen(port, () => {

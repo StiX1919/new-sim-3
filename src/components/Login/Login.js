@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import {connect} from 'react-redux'
+import axios from 'axios'
 import './Login.css';
 
 import {Link} from 'react-router-dom'
@@ -15,11 +16,17 @@ class Login extends Component {
         }
 
         this.inputTest = this.inputTest.bind(this)
+        this.newTest = this.newTest.bind(this)
 
     }
     inputTest(thing) {
         this.setState({testWord: thing.target.value})
     }
+
+    newTest() {
+        axios.get('http://localhost:3000/api/newTest/')
+    }
+
   render() {
     return (
       <div className="App">
@@ -28,11 +35,11 @@ class Login extends Component {
             <input onChange={e => this.inputTest(e)}></input>
             <input placeholder={this.state.testWord}></input>
             <div className='login-buttons'>
-                <Link to="/Home">  <button onClick={() => this.props.test(this.state.testWord)}>Register</button>  </Link>
+                <Link to="/Home">  <button onClick={() => this.props.test()}>Register</button>  </Link>
                 <Link to="/Home">  <button>Login</button>  </Link>
+                <button onClick={() => this.newTest()}>Test</button>
             </div>
         </div>
-
       </div>
     );
   }
