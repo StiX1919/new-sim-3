@@ -19,11 +19,9 @@ const app = express();
 //
 
 massive(process.env.CONNECTION_STRING)
-  .then(db => {
-    app.set("db", db);
-  })
-  .catch(err => console.log(err));
-
+  .then(db => app.set('db', db))
+  .catch(console.log);
+  
 app.use(json());
 app.use(cors());
 // app.use(
@@ -37,7 +35,7 @@ app.use(cors());
 // app.get('/api/getColor', (req, res) => {
 //     res.send(color)
 // })
-app.get('/api/newTest/', test)
+app.get('/api/newTest/:NAME/:PASS', test)
 
 //LISTENING
 app.listen(port, () => {
