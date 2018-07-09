@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import logo from '../../logo.svg';
+
+import {connect} from 'react-redux'
 import './Home.css';
 
 class Home extends Component {
   render() {
     return (
       <div className="App">
-        <h1>Logged In</h1>
+        <h1>{this.props.test}</h1>
       </div>
     );
   }
 }
 
-export default Home;
+const mapStateToProps = state => state
+
+export default connect(mapStateToProps, {})(Home);
