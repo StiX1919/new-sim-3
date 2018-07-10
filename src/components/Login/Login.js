@@ -31,7 +31,8 @@ class Login extends Component {
 
     newTest(name, pass) {
         axios.get(`http://localhost:3000/api/newTest/${name}/${pass}`).then(response => {
-            this.setState({user: response.name})
+            console.log('response', response.data)
+            this.setState({user: response.data[0].name})
         })
     }
 
