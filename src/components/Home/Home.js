@@ -3,16 +3,28 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import './Home.css';
 
+import {getUser} from '../../ducks/reducer'
+
 class Home extends Component {
+
+  componentDidMount(){
+    if(!this.props.userInfo) {
+      this.props.history.push('/')
+    }
+  }
+
   render() {
-      console.log(this.props.testing)
     return (
         
       <div className="App">
-        <h1>Logged in</h1>
-        {this.props.isLoading === false && 
-            <h1>{this.props.testing}</h1>
+        {this.props.userInfo &&
+        <div>
+          <h1>hello</h1>
+          <h1>{this.props.userInfo.name}</h1>
+        </div>
         }
+        <h1>Logged in</h1>
+        
         
       </div>
     );
@@ -21,4 +33,4 @@ class Home extends Component {
 
 const mapStateToProps = state => state
 
-export default connect(mapStateToProps, {})(Home);
+export default connect(mapStateToProps, {getUser})(Home);

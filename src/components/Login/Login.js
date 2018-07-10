@@ -6,7 +6,9 @@ import './Login.css';
 
 import {Link} from 'react-router-dom'
 
-import {test} from '../../ducks/reducer'
+import { loginInfo,
+        getUser } from '../../ducks/reducer'
+import { setTimeout } from 'timers';
 
 class Login extends Component {
     constructor(props) {
@@ -14,12 +16,14 @@ class Login extends Component {
         this.state = {
           testWord: 'nothing',
           testPass: 'nothing',
-          user: 'none'
+          user: 'none',
+          invalidLogin: false
         }
 
         this.inputTest = this.inputTest.bind(this)
         this.inputPass = this.inputPass.bind(this)
-        this.newTest = this.newTest.bind(this)
+
+        this.goHome = this.goHome.bind(this)
 
     }
     inputTest(thing) {
@@ -28,13 +32,24 @@ class Login extends Component {
     inputPass(thing) {
         this.setState({testPass: thing.target.value})
     }
-
-    newTest(name, pass) {
-        axios.get(`http://localhost:3000/api/newTest/${name}/${pass}`).then(response => {
-            console.log('response', response.data)
-            this.setState({user: response.data[0].name})
-        })
+    goHome() {
+        console.log('hit', this.props.userInfo)
+        if(this.props.userInfo === false){
+            this.setState({invalidLogin: true})
+            return 
+        }
+        else if(this.props.userInfo && this.props.userInfo !== false ){
+            console.log('hitter', this.props.userInfo)
+            this.props.history.push('/Home')
+        } else setTimeout( this.goHome, 1000 )
     }
+
+    login(name, pass, callback) {
+        this.setState({invalidLogin: false})
+        this.props.getUser(name, pass)
+        callback()
+    }
+    
 
   render() {
     return (
@@ -44,11 +59,12 @@ class Login extends Component {
             <input onChange={e => this.inputTest(e)}></input>
             <input onChange={e => this.inputPass(e)}></input>
             <div className='login-buttons'>
-                <Link to="/Home">  <button onClick={() => this.props.test()}>Register</button>  </Link>
-                <Link to="/Home">  <button>Login</button>  </Link>
-                <button onClick={() => this.newTest(this.state.testWord, this.state.testPass)}>Test</button>
+                <Link to="/Home">  <button>Register</button>  </Link>
+                <button onClick={() => this.login(this.state.testWord, this.state.testPass, this.goHome)}>Login</button>
             </div>
-            <h1>{this.state.user}</h1>
+            {this.state.invalidLogin === true &&
+            <h1>Invalid Username/password</h1>
+            }
         </div>
       </div>
     );
@@ -57,4 +73,4 @@ class Login extends Component {
 
 const mapStateToProps = state => state
 
-export default connect(mapStateToProps, {test})(Login);
+export default connect(mapStateToProps, { loginInfo, getUser })(Login);

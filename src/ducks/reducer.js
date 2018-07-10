@@ -1,37 +1,51 @@
 import axios from 'axios'
 
-const TEST = 'TEST'
+const LOGIN_INFO = 'LOGIN_INFO'
+const GET_USER = 'GET_USER'
 
 const initialState = {
-    testing: 'nothing',
+    username: '',
+    password: '',
     isLoading: false
 };
 
 
-export function test() {
+export function loginInfo(name, pass) {
     return {
-        type: TEST,
-        payload: axios.get('http://localhost:3000/api/newTest/').then(response => {
+        type: LOGIN_INFO,
+        payload: {name, pass}
+    }
+}
+
+export function getUser(name, pass) {
+    return {
+        type: GET_USER,
+        payload: axios.get(`http://localhost:3000/api/getUser/${name}/${pass}`).then( response => {
             console.log(response.data, 'response')
-        return response.data
-    })
+            if(!response.data[0]){
+                return false
+            }
+            else
+                return response.data[0]
+        })
+    }
 }
-}
+
 // Reducer
 
 export default function reducer(state = initialState, action){
     switch(action.type) {
 
-        case TEST + "_PENDING": 
+        case LOGIN_INFO: 
             return Object.assign({}, state, {
-                isLoading: true
+                username: action.payload.name,
+                password: action.payload.pass
             });
-        case TEST + "_FULFILLED": 
+        
+        case GET_USER:
             return Object.assign({}, state, {
-                isLoading: false,
-                testing: action.payload
-            });
-
+                userInfo: action.payload
+            })
 
         default:
             return state

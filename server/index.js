@@ -7,7 +7,7 @@ const session = require("express-session");
 const massive = require("massive");
 
 const {
-  test
+  getUser
 } = require('./controllers/mainController')
 
 const port = 3000;
@@ -35,7 +35,7 @@ app.use(cors());
 // app.get('/api/getColor', (req, res) => {
 //     res.send(color)
 // })
-app.get('/api/newTest/:NAME/:PASS', test)
+app.get('/api/getUser/:NAME/:PASS', getUser)
 
 //LISTENING
 app.listen(port, () => {

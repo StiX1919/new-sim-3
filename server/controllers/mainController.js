@@ -1,5 +1,5 @@
 module.exports = {
-    test: (req, res, next) => {
+    getUser: (req, res, next) => {
         const dbInstance = req.app.get('db');
         const {NAME, PASS} = req.params
         console.log(dbInstance, 'dbinstance')
