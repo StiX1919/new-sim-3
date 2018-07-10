@@ -36,7 +36,7 @@ class Login extends Component {
         console.log('hit', this.props.userInfo)
         if(this.props.userInfo === false){
             this.setState({invalidLogin: true})
-            return 
+            return;
         }
         else if(this.props.userInfo && this.props.userInfo !== false ){
             console.log('hitter', this.props.userInfo)
